@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delta Events – Creating Memorable Experiences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E4C97A;--gold-dark:#A07832;--cream:#F5EDD9;--cream-dark:#EDE0C4;--dark:#111111;--dark2:#1C1C1C;--dark3:#272727;--tf:#F0E8D5;--fd:'Cormorant Garamond',Georgia,serif;--fb:'Jost',sans-serif;--fs:'Great Vibes',cursive;--ease:cubic-bezier(.25,.8,.25,1);--sh:0 20px 60px rgba(0,0,0,.18);--shg:0 8px 32px rgba(201,168,76,.35)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cream);color:var(--dark);overflow-x:hidden;line-height:1.7}
+img{max-width:100%;display:block;object-fit:cover}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+ul{list-style:none}
+
+/* PRELOADER */
+#pl{position:fixed;inset:0;z-index:9999;background:var(--dark);display:flex;align-items:center;justify-content:center;transition:opacity .7s ease,visibility .7s ease}
+#pl.done{opacity:0;visibility:hidden;pointer-events:none}
+.pl-in{text-align:center}
+.pl-crown{font-size:3rem;color:var(--gold);display:block;margin-bottom:1.2rem;animation:pfl 1.8s ease-in-out infinite}
+.pl-name{font-family:var(--fd);font-size:2.6rem;font-weight:600;color:var(--cream);letter-spacing:.35em;display:block;margin-bottom:.2rem}
+.pl-sub{font-size:.62rem;font-weight:300;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2rem}
+.pl-bar{width:220px;height:2px;background:rgba(201,168,76,.15);margin:0 auto;overflow:hidden}
+.pl-fill{height:100%;width:0;background:linear-gradient(to right,var(--gold-dark),var(--gold-light));animation:pld 2.3s ease forwards}
+@keyframes pfl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pld{0%{width:0}60%{width:80%}100%{width:100%}}
+
+/* NAVBAR */
+#nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.4rem 0;transition:all .4s var(--ease)}
+#nav.sc{background:rgba(12,10,7,.97);backdrop-filter:blur(14px);padding:.85rem 0;box-shadow:0 4px 40px rgba(0,0,0,.35)}
+.nw{max-width:1300px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;gap:2rem}
+.nlogo{display:flex;align-items:center;gap:.65rem}
+.lcr{color:var(--gold);font-size:1.5rem}
+.lt{display:flex;flex-direction:column;line-height:1}
+.ld{font-family:var(--fd);font-size:1.45rem;font-weight:700;color:var(--cream);letter-spacing:.22em}
+.le{font-size:.52rem;font-weight:300;color:var(--gold);letter-spacing:.5em;text-transform:uppercase}
+.nlinks{display:flex;gap:2rem;margin-left:auto}
+.nlinks a{font-size:.75rem;font-weight:400;color:rgba(240,232,213,.72);letter-spacing:.13em;text-transform:uppercase;transition:color .3s;position:relative;padding-bottom:3px}
+.nlinks a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nlinks a:hover{color:var(--gold)}
+.nlinks a:hover::after{width:100%}
+.ncta{font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.6rem 1.5rem;border:1px solid var(--gold);color:var(--gold);transition:all .3s;white-space:nowrap}
+.ncta:hover{background:var(--gold);color:var(--dark)}
+.ham{display:none;flex-direction:column;gap:5px;padding:4px;margin-left:auto}
+.ham span{display:block;width:24px;height:1.5px;background:var(--cream);transition:all .35s var(--ease)}
+.ham.op span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+.ham.op span:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham.op span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mnav{display:none;flex-direction:column;background:rgba(10,8,5,.98);border-top:1px solid rgba(201,168,76,.15);padding:1rem 2rem 2rem}
+.mnav.op{display:flex}
+.mnav a{color:var(--tf);padding:.75rem 0;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05)}
+.mnav a:last-child{border:none}
+.mcta{margin-top:1rem;text-align:center;padding:.8rem;border:1px solid var(--gold)!important;color:var(--gold)!important}
+
+/* HERO */
+#hero{position:relative;height:100vh;min-height:680px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hslides{position:absolute;inset:0}
+.hsl{position:absolute;inset:0;opacity:0;background-size:cover;background-position:center;transition:opacity 1.4s ease}
+.hsl.ac{opacity:1;animation:kb 9s ease-out forwards}
+@keyframes kb{from{transform:scale(1.06)}to{transform:scale(1)}}
+.hov{position:absolute;inset:0;background:linear-gradient(160deg,rgba(5,3,1,.9) 0%,rgba(5,3,1,.58) 50%,rgba(5,3,1,.85) 100%)}
+.hcon{position:relative;z-index:2;text-align:center;padding:0 1.5rem;max-width:960px}
+.hsub{font-size:.78rem;font-weight:300;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block;text-shadow:0 2px 14px rgba(0,0,0,.9)}
+.htit{font-family:var(--fd);font-size:clamp(3.5rem,9vw,8rem);font-weight:300;color:#fff;line-height:1;letter-spacing:.04em;text-shadow:0 4px 30px rgba(0,0,0,1),0 1px 8px rgba(0,0,0,1);margin-bottom:.4rem}
+.htit em{font-style:italic;color:var(--gold)}
+.hdiv{display:flex;align-items:center;justify-content:center;gap:1rem;margin:1.3rem auto;font-size:1.5rem;color:var(--gold);filter:drop-shadow(0 2px 8px rgba(0,0,0,.8))}
+.hdiv::before,.hdiv::after{content:'';flex:1;max-width:80px;height:1px;background:linear-gradient(to right,transparent,var(--gold));opacity:.7}
+.hdiv::after{background:linear-gradient(to left,transparent,var(--gold))}
+.hcr{animation:pfl 3s ease-in-out infinite;display:inline-block}
+.htag{font-family:var(--fs);font-size:clamp(1.5rem,3vw,2.3rem);color:#fff;margin-bottom:2.8rem;text-shadow:0 2px 20px rgba(0,0,0,1),0 1px 6px rgba(0,0,0,1)}
+.hbtns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;z-index:2;color:rgba(240,232,213,.4);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase}
+.sline{width:1px;height:50px;background:linear-gradient(to bottom,rgba(201,168,76,.7),transparent);animation:plx 2s ease-in-out infinite}
+@keyframes plx{0%,100%{opacity:.4}50%{opacity:1}}
+.sdots{position:absolute;bottom:2rem;right:2.5rem;display:flex;gap:.5rem;z-index:2}
+.sd{width:8px;height:8px;border-radius:50%;border:1px solid var(--gold);cursor:pointer;transition:all .3s}
+.sd.ac{background:var(--gold);transform:scale(1.2)}
+
+/* BUTTONS */
+.bp{display:inline-block;padding:.9rem 2.4rem;background:var(--gold);color:var(--dark);font-size:.76rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;transition:all .35s var(--ease);position:relative;overflow:hidden;z-index:1}
+.bp::before{content:'';position:absolute;inset:0;background:var(--gold-dark);transform:translateX(-101%);transition:transform .4s var(--ease)}
+.bp:hover{color:#fff;box-shadow:var(--shg)}
+.bp:hover::before{transform:translateX(0)}
+.bo{display:inline-block;padding:.9rem 2.4rem;border:1px solid rgba(240,232,213,.42);color:#fff;font-size:.76rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;transition:all .3s}
+.bo:hover{border-color:var(--gold);color:var(--gold)}
+.bfu{width:100%;text-align:center}
+
+/* MARQUEE */
+.mbar{background:var(--gold);padding:.8rem 0;overflow:hidden}
+.mtr{display:flex;gap:3rem;white-space:nowrap;animation:mq 32s linear infinite}
+.mtr span{font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--dark);flex-shrink:0}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+.sec{padding:7rem 0}
+.sdk{background:var(--dark2)}
+.sgold{background:linear-gradient(135deg,#8A6520 0%,var(--gold) 45%,#C4A252 55%,#8A6520 100%)}
+.con{max-width:1300px;margin:0 auto;padding:0 2rem}
+.sh{text-align:center;margin-bottom:4rem}
+.sl{font-size:.7rem;font-weight:400;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;display:block}
+.sl.lt{color:var(--gold-light)}
+.sl.dk{color:rgba(17,17,17,.55)}
+.st{font-family:var(--fd);font-size:clamp(2rem,4vw,3.3rem);font-weight:400;color:var(--dark);line-height:1.2}
+.st.lt{color:var(--cream)}
+.st.dk{color:var(--dark)}
+.st em{font-style:italic;color:var(--gold)}
+.gb{width:55px;height:2px;background:var(--gold);margin-top:1.2rem}
+.gbcx{margin:1.2rem auto 0}
+.gbdk{background:rgba(17,17,17,.35)}
+
+/* REVEAL */
+.rv{opacity:0;transition:opacity .75s ease,transform .75s ease;transition-delay:var(--d,0s)}
+.rvu{transform:translateY(42px)}
+.rvl{transform:translateX(-52px)}
+.rvr{transform:translateX(52px)}
+.rv.in{opacity:1;transform:translate(0,0)}
+
+/* ABOUT */
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.aims{position:relative}
+.amain{overflow:hidden;box-shadow:var(--sh)}
+.amain img{width:100%;height:500px;transition:transform .6s}
+.amain:hover img{transform:scale(1.04)}
+.aacc{position:absolute;bottom:-2.5rem;right:-2.5rem;width:200px;border:4px solid var(--cream);overflow:hidden;box-shadow:var(--sh)}
+.aacc img{width:100%;height:155px}
+.abadge{position:absolute;top:-14px;left:-14px;background:var(--gold);padding:.85rem 1rem;text-align:center;z-index:2}
+.bnum{display:block;font-family:var(--fd);font-size:1.9rem;font-weight:700;color:var(--dark);line-height:1}
+.btxt{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dark)}
+.atx{color:#585858;margin-bottom:1rem;line-height:1.85}
+.afts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:1.5rem 0 2rem}
+.aft{font-size:.85rem;color:#454545}
+.afd{color:var(--gold);margin-right:.4rem}
+
+/* SERVICES */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(201,168,76,.1)}
+.scard{background:var(--dark3);padding:2.5rem 2rem;transition:all .4s var(--ease);position:relative;overflow:hidden}
+.scard::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .5s}
+.scard:hover::after{width:100%}
+.scard:hover{background:#202020;transform:translateY(-5px)}
+.sico{font-size:2.2rem;margin-bottom:1.2rem;display:block;transition:transform .3s}
+.scard:hover .sico{transform:scale(1.18)}
+.scard h3{font-family:var(--fd);font-size:1.3rem;font-weight:500;color:var(--cream);margin-bottom:.75rem}
+.scard p{font-size:.84rem;color:rgba(240,232,213,.52);line-height:1.75;margin-bottom:1.5rem}
+.slnk{display:inline-block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,168,76,.4);padding-bottom:2px;transition:all .3s}
+.slnk:hover{color:var(--gold-light);letter-spacing:.28em}
+
+/* STATS */
+.stgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.stcard{text-align:center;padding:3rem 1.5rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);transition:all .4s var(--ease)}
+.stcard:hover{background:rgba(255,255,255,.2);transform:translateY(-5px)}
+.stn{font-family:var(--fd);font-size:4.2rem;font-weight:700;color:var(--dark);line-height:1;display:inline}
+.stp{display:inline;font-family:var(--fd);font-size:2.2rem;color:var(--dark)}
+.stl{font-size:.73rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(20,15,5,.62);margin-top:.8rem}
+
+/* GALLERY */
+.gfil{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}
+.fb{padding:.5rem 1.4rem;font-size:.73rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(201,168,76,.28);color:#777;transition:all .3s}
+.fb.ac,.fb:hover{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+.ggrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:1rem}
+.gi{position:relative;overflow:hidden;background:#ccc}
+.gi.wi{grid-column:span 2;grid-row:span 2}
+.gi img{width:100%;height:100%;transition:transform .65s}
+.gi:hover img{transform:scale(1.09)}
+.gov{position:absolute;inset:0;background:rgba(4,2,0,.56);display:flex;align-items:flex-end;padding:1.2rem;opacity:0;transition:opacity .4s}
+.gi:hover .gov{opacity:1}
+.gov span{font-family:var(--fd);font-size:1rem;color:var(--cream);letter-spacing:.04em}
+.gi.hid{display:none}
+
+/* TESTIMONIALS */
+.rrow{display:flex;align-items:center;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.rst{color:var(--gold);font-size:1.3rem;letter-spacing:.1em}
+.rnum{font-family:var(--fd);font-size:1.6rem;font-weight:600;color:var(--cream)}
+.rcnt{font-size:.76rem;color:rgba(240,232,213,.42);letter-spacing:.1em}
+.tcar{padding:.5rem 0 2rem}
+.ttr{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.tc{padding:2.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.13);position:relative;display:none;animation:fin .5s ease}
+.tc.vis{display:block}
+@keyframes fin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.tq{font-family:var(--fd);font-size:5rem;color:var(--gold);opacity:.22;line-height:.8;margin-bottom:.5rem}
+.tc p{font-size:.88rem;color:rgba(240,232,213,.7);line-height:1.82;margin-bottom:1.5rem;font-style:italic}
+.tau{display:flex;align-items:center;gap:1rem}
+.tav{width:46px;height:46px;border-radius:50%;background:var(--gold);color:var(--dark);font-weight:600;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tau strong{display:block;color:var(--cream);font-size:.88rem}
+.tau span{display:block;font-size:.73rem;color:rgba(240,232,213,.36)}
+.tst{color:var(--gold);font-size:.78rem;letter-spacing:.1em;margin-top:.2rem}
+.tcon{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:2.2rem}
+.tbtn{width:44px;height:44px;border:1px solid rgba(201,168,76,.32);color:var(--gold);font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.tbtn:hover{background:var(--gold);color:var(--dark)}
+.tdots{display:flex;gap:.5rem}
+.tdots span{width:7px;height:7px;border-radius:50%;background:rgba(201,168,76,.25);cursor:pointer;transition:all .3s}
+.tdots span.ac{background:var(--gold);transform:scale(1.25)}
+
+/* TEAM */
+.tmgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;max-width:1000px;margin:0 auto}
+.tmcard{text-align:center;transition:transform .4s var(--ease)}
+.tmcard:hover{transform:translateY(-8px)}
+.tmph{position:relative;width:210px;height:255px;margin:0 auto 1.8rem;overflow:hidden}
+.tmph::after{content:'';position:absolute;inset:0;border:2px solid transparent;transition:border-color .4s;z-index:2;pointer-events:none}
+.tmcard:hover .tmph::after{border-color:var(--gold)}
+.tmph img{width:100%;height:100%;transition:transform .6s}
+.tmcard:hover .tmph img{transform:scale(1.06)}
+.tmbdg{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--dark);width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.72rem;z-index:3}
+.tmnm{font-family:var(--fd);font-size:1.5rem;font-weight:600;color:var(--dark);margin-bottom:.3rem}
+.tmrl{font-size:.68rem;letter-spacing:.27em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.6rem}
+.tmlne{width:30px;height:1px;background:var(--gold);margin:.7rem auto;opacity:.52}
+.tmbio{font-size:.83rem;color:#666;line-height:1.78;padding:0 .3rem}
+.tmln{display:flex;justify-content:center;gap:.75rem;margin-top:1.2rem}
+.tmln a{width:34px;height:34px;border:1px solid rgba(201,168,76,.28);display:flex;align-items:center;justify-content:center;font-size:.88rem;color:#999;transition:all .3s}
+.tmln a:hover{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+
+/* FAQ */
+.fwrap{max-width:800px;margin:0 auto}
+.fi{border-bottom:1px solid rgba(201,168,76,.16)}
+.fq{width:100%;text-align:left;padding:1.3rem 0;font-family:var(--fd);font-size:1.1rem;color:var(--cream);display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:color .3s}
+.fq:hover{color:var(--gold-light)}
+.fic{color:var(--gold);font-size:1.4rem;transition:transform .35s;flex-shrink:0}
+.fi.op .fic{transform:rotate(45deg)}
+.fa{overflow:hidden;max-height:0;transition:max-height .45s ease}
+.fa p{padding:0 0 1.2rem;color:rgba(240,232,213,.6);font-size:.9rem;line-height:1.8}
+
+
+/* CONTACT */
+.cgrid{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:start}
+.ci{display:flex;gap:1.2rem;align-items:flex-start;margin-bottom:1.8rem}
+.cic{font-size:1.35rem;margin-top:.1rem;flex-shrink:0}
+.ci h4{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.ci p,.ci a{font-size:.9rem;color:rgba(240,232,213,.6)}
+.ci a:hover{color:var(--gold)}
+.csoc{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.csl{padding:.5rem 1rem;border:1px solid rgba(201,168,76,.2);color:rgba(240,232,213,.52);font-size:.76rem;letter-spacing:.1em;transition:all .3s}
+.csl:hover{border-color:var(--gold);color:var(--gold)}
+.cfw{background:rgba(255,255,255,.03);border:1px solid rgba(201,168,76,.12);padding:2.5rem}
+.cform{display:flex;flex-direction:column;gap:1.2rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.fg{display:flex;flex-direction:column;gap:.4rem}
+.fg label{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,232,213,.35)}
+.fg input,.fg select,.fg textarea{padding:.88rem 1rem;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.16);color:var(--cream);font-family:var(--fb);font-size:.9rem;outline:none;transition:border-color .3s;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold)}
+.fg select option{background:var(--dark2)}
+.fg textarea{resize:vertical}
+
+/* FOOTER */
+footer{background:var(--dark)}
+.ftop{padding:5rem 0 3rem;border-bottom:1px solid rgba(201,168,76,.1)}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:4rem}
+.fbrd p{color:rgba(240,232,213,.36);font-size:.84rem;margin:1.2rem 0 1.5rem;line-height:1.75}
+.flog{display:flex;align-items:center;gap:.65rem;margin-bottom:.5rem}
+.fsoc{display:flex;gap:1rem}
+.fsoc a{font-size:1.2rem;display:block;transition:transform .3s}
+.fsoc a:hover{transform:translateY(-3px)}
+.fcol h4{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.fcol ul li{margin-bottom:.6rem}
+.fcol ul li a,.fcol p,.fcol a{color:rgba(240,232,213,.4);font-size:.84rem;display:block;transition:color .3s;margin-bottom:.6rem}
+.fcol ul li a:hover,.fcol a:hover{color:var(--gold)}
+.fbot{padding:1.5rem 0;text-align:center;color:rgba(240,232,213,.2);font-size:.72rem}
+
+/* WHATSAPP FLOAT */
+.waf{position:fixed;bottom:2rem;left:2rem;z-index:900;display:flex;align-items:center;gap:.75rem;background:#25D366;color:#fff;padding:.78rem 1.35rem;border-radius:50px;box-shadow:0 8px 28px rgba(37,211,102,.42);transition:all .35s var(--ease)}
+.waf svg{width:22px;height:22px;flex-shrink:0}
+.waf span{font-size:.8rem;font-weight:500;letter-spacing:.06em}
+.waf:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(37,211,102,.52)}
+.stb{position:fixed;bottom:2rem;right:2rem;z-index:900;width:44px;height:44px;background:var(--gold);color:var(--dark);font-size:1.2rem;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .35s var(--ease)}
+.stb.sh{opacity:1;visibility:visible}
+.stb:hover{background:var(--gold-dark);color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+.agrid{grid-template-columns:1fr;gap:3rem}
+.aims{max-width:580px;margin:0 auto}
+.sgrid{grid-template-columns:repeat(2,1fr)}
+.stgrid{grid-template-columns:repeat(2,1fr)}
+.fgrid{grid-template-columns:1fr 1fr;gap:2.5rem}
+.ggrid{grid-template-columns:repeat(3,1fr)}
+.gi.wi{grid-column:span 1;grid-row:span 1}
+}
+@media(max-width:900px){
+.nlinks,.ncta{display:none}
+.ham{display:flex}
+.ttr{grid-template-columns:repeat(2,1fr)}
+.tmgrid{grid-template-columns:repeat(2,1fr);max-width:680px}
+.cgrid{grid-template-columns:1fr}
+.ggrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+.sec{padding:4rem 0}
+.htit{font-size:3rem}
+.sgrid{grid-template-columns:1fr}
+.stgrid{grid-template-columns:1fr 1fr}
+.ttr{grid-template-columns:1fr}
+.tmgrid{grid-template-columns:1fr;max-width:300px}
+.fgrid{grid-template-columns:1fr;gap:2rem}
+.frow{grid-template-columns:1fr}
+.nlin{flex-direction:column}
+.nlfm{width:100%;flex-direction:column}
+.nlfm input{min-width:unset;width:100%;border-right:1px solid rgba(201,168,76,.25);border-bottom:none}
+.ggrid{grid-template-columns:1fr 1fr;grid-auto-rows:160px}
+.aacc{display:none}
+.waf span{display:none}
+.waf{padding:.88rem;border-radius:50%}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="pl">
+  <div class="pl-in">
+    <span class="pl-crown">♛</span>
+    <span class="pl-name">DELTA EVENTS</span>
+    <span class="pl-sub">Vengara &nbsp;·&nbsp; Kerala</span>
+    <div class="pl-bar"><div class="pl-fill"></div></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <div class="nw">
+    <a href="#hero" class="nlogo">
+      <span class="lcr">♛</span>
+      <div class="lt"><span class="ld">DELTA</span><span class="le">EVENTS</span></div>
+    </a>
+    <ul class="nlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#achievements">Stats</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://wa.me/919633775535?text=Hello%20Delta%20Events!%20I'd%20like%20to%20enquire." target="_blank" class="ncta">Book Now</a>
+    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mnav" id="mnav">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#achievements">Stats</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#team">Team</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#contact">Contact</a>
+    <a href="https://wa.me/919633775535" target="_blank" class="mcta">Book Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hslides">
+    <div class="hsl ac" style="background-image:url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&q=80')"></div>
+    <div class="hsl" style="background-image:url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80')"></div>
+    <div class="hsl" style="background-image:url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80')"></div>
+    <div class="hsl" style="background-image:url('https://images.unsplash.com/photo-1478146059778-26028b07395a?w=1920&q=80')"></div>
+  </div>
+  <div class="hov"></div>
+  <div class="hcon">
+    <span class="hsub rv rvu">Vengara, Kerala's Premier</span>
+    <h1 class="htit rv rvu" style="--d:.1s">Event <em>Management</em></h1>
+    <div class="hdiv rv rvu" style="--d:.2s"><span class="hcr">♛</span></div>
+    <p class="htag rv rvu" style="--d:.3s">Creating Memorable Experiences in Every Event</p>
+    <div class="hbtns rv rvu" style="--d:.4s">
+      <a href="#services" class="bp">Explore Services</a>
+      <a href="#contact" class="bo">Get a Quote</a>
+    </div>
+  </div>
+  <div class="hint"><span>Scroll</span><div class="sline"></div></div>
+  <div class="sdots">
+    <span class="sd ac" data-i="0"></span>
+    <span class="sd" data-i="1"></span>
+    <span class="sd" data-i="2"></span>
+    <span class="sd" data-i="3"></span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="mbar">
+  <div class="mtr">
+    <span>♛ Weddings</span><span>✦ Corporate Events</span><span>♛ Birthday Parties</span><span>✦ Baby Showers</span><span>♛ Bridal Shows</span><span>✦ School Events</span><span>♛ Catering</span><span>✦ Photography</span><span>♛ Rustic Weddings</span><span>✦ Engagements</span>
+    <span>♛ Weddings</span><span>✦ Corporate Events</span><span>♛ Birthday Parties</span><span>✦ Baby Showers</span><span>♛ Bridal Shows</span><span>✦ School Events</span><span>♛ Catering</span><span>✦ Photography</span><span>♛ Rustic Weddings</span><span>✦ Engagements</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div class="con">
+    <div class="agrid">
+      <div class="aims">
+        <div class="amain rv rvl"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=700&q=80" alt="Delta Events"></div>
+        <div class="aacc rv rvl" style="--d:.15s">
+          <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=400&q=80" alt="Décor">
+          <div class="abadge"><span class="bnum">10+</span><span class="btxt">Years of Excellence</span></div>
+        </div>
+      </div>
+      <div class="rv rvr">
+        <span class="sl">Who We Are</span>
+        <h2 class="st">Crafting Events <em>Beyond Imagination</em></h2>
+        <div class="gb" style="margin-top:1.2rem;margin-bottom:1.5rem"></div>
+        <p class="atx">Delta Events is run by a team of young, dynamic, and talented professionals with experience in successful events across Kerala. From intimate celebrations to grand corporate gatherings, we bring passion, precision, and artistry to every occasion.</p>
+        <p class="atx">Based in Vengara, Malappuram, we serve clients across Kerala with a commitment to excellence that has made us the most trusted name in event management.</p>
+        <div class="afts">
+          <div class="aft"><span class="afd">✦</span>Personalized Planning</div>
+          <div class="aft"><span class="afd">✦</span>24/7 Support</div>
+          <div class="aft"><span class="afd">✦</span>Premium Vendors Network</div>
+          <div class="aft"><span class="afd">✦</span>On-time Delivery</div>
+        </div>
+        <a href="#contact" class="bp">Work With Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="sec sdk">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl lt">What We Offer</span>
+      <h2 class="st lt">Our <em>Services</em></h2>
+      <div class="gb gbcx"></div>
+    </div>
+    <div class="sgrid">
+      <div class="scard rv rvu" style="--d:0s"><span class="sico">💍</span><h3>Weddings &amp; Engagements</h3><p>Timeless ceremonies crafted with elegance. We handle every detail from décor to catering for your perfect day.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Wedding%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.08s"><span class="sico">🌿</span><h3>Rustic Weddings</h3><p>Bohemian, earthy, and utterly romantic. Handcrafted rustic settings that feel like a fairy tale come to life.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Rustic%20Wedding%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.16s"><span class="sico">👶</span><h3>Baby Showers</h3><p>Celebrate the arrival of your little one with sweet, tender decorations and joyful atmospheres.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Baby%20Shower%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.24s"><span class="sico">🎂</span><h3>Birthday Parties</h3><p>From kids' magical parties to milestone adult celebrations — customized themes, cakes, and entertainment.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Birthday%20Party%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.32s"><span class="sico">💼</span><h3>Corporate Events</h3><p>Professional conferences, product launches, and team building events executed with flawless precision.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Corporate%20Event%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.40s"><span class="sico">👑</span><h3>Bridal Shows</h3><p>Grand bridal exhibitions showcasing the finest in fashion, jewelry, and bridal décor across Kerala.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Bridal%20Show%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.48s"><span class="sico">🎓</span><h3>School Events</h3><p>Annual days, cultural fests, farewell parties — memorable school events with professional stage setups.</p><a href="https://wa.me/919633775535?text=Interested%20in%20School%20Event%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.56s"><span class="sico">🍽️</span><h3>Catering &amp; Food</h3><p>Exquisite multi-cuisine catering with traditional Kerala flavors and international gourmet options.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Catering%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+      <div class="scard rv rvu" style="--d:.64s"><span class="sico">📷</span><h3>Photography &amp; Video</h3><p>Cinematic storytelling through premium photography and videography that preserves every golden moment.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Photography%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="achievements" class="sec sgold">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl dk">Our Legacy</span>
+      <h2 class="st dk">Numbers That <em>Speak</em></h2>
+      <div class="gb gbcx gbdk"></div>
+    </div>
+    <div class="stgrid">
+      <div class="stcard rv rvu" style="--d:0s"><div class="stn" data-target="500">0</div><div class="stp">+</div><div class="stl">Events Completed</div></div>
+      <div class="stcard rv rvu" style="--d:.15s"><div class="stn" data-target="480">0</div><div class="stp">+</div><div class="stl">Happy Clients</div></div>
+      <div class="stcard rv rvu" style="--d:.3s"><div class="stn" data-target="15">0</div><div class="stp">+</div><div class="stl">Awards Won</div></div>
+      <div class="stcard rv rvu" style="--d:.45s"><div class="stn" data-target="49" data-dec="1">0</div><div class="stp">★</div><div class="stl">Average Rating</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="sec">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl">Our Work</span>
+      <h2 class="st">Event <em>Portfolio</em></h2>
+      <div class="gb gbcx"></div>
+    </div>
+    <div class="gfil rv rvu" style="--d:.1s">
+      <button class="fb ac" data-f="all">All Events</button>
+      <button class="fb" data-f="wedding">Weddings</button>
+      <button class="fb" data-f="corporate">Corporate</button>
+      <button class="fb" data-f="birthday">Birthdays</button>
+      <button class="fb" data-f="decor">Décor</button>
+    </div>
+    <div class="ggrid rv rvu" style="--d:.2s">
+      <div class="gi" data-cat="wedding"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Wedding"><div class="gov"><span>Wedding Ceremony</span></div></div>
+      <div class="gi wi" data-cat="decor"><img src="https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800&q=80" alt="Decor"><div class="gov"><span>Premium Décor</span></div></div>
+      <div class="gi" data-cat="corporate"><img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&q=80" alt="Corporate"><div class="gov"><span>Corporate Event</span></div></div>
+      <div class="gi" data-cat="birthday"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Birthday"><div class="gov"><span>Birthday Party</span></div></div>
+      <div class="gi" data-cat="wedding"><img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80" alt="Flowers"><div class="gov"><span>Floral Arrangements</span></div></div>
+      <div class="gi wi" data-cat="wedding"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80" alt="Hall"><div class="gov"><span>Grand Banquet</span></div></div>
+      <div class="gi" data-cat="decor"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80" alt="Stage"><div class="gov"><span>Stage Setup</span></div></div>
+      <div class="gi" data-cat="corporate"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80" alt="Conference"><div class="gov"><span>Conference</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="sec sdk">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl lt">Client Stories</span>
+      <h2 class="st lt">What They <em>Say</em></h2>
+      <div class="gb gbcx"></div>
+      <div class="rrow rv rvu" style="--d:.1s">
+        <span class="rst">★★★★★</span>
+        <span class="rnum">4.9 / 5.0</span>
+        <span class="rcnt">Based on 200+ Reviews</span>
+      </div>
+    </div>
+    <div class="tcar" id="tCar">
+      <div class="ttr" id="tTr">
+        <div class="tc"><div class="tq">"</div><p>Delta Events made our wedding day absolutely magical. Every detail was perfect — from the floral arrangements to the lighting. Highly recommend to anyone looking for a premium event experience in Kerala.</p><div class="tau"><div class="tav">AF</div><div><strong>Aisha Fathima</strong><span>Wedding Client, Malappuram</span><div class="tst">★★★★★</div></div></div></div>
+        <div class="tc"><div class="tq">"</div><p>We hired Delta Events for our company's annual gala. Their professionalism and attention to detail were outstanding. The setup was grand, the catering excellent, and everything ran on time.</p><div class="tau"><div class="tav">MR</div><div><strong>Mohammed Riyas</strong><span>Corporate Client, Kozhikode</span><div class="tst">★★★★★</div></div></div></div>
+        <div class="tc"><div class="tq">"</div><p>My daughter's birthday party was a dream come true. The team at Delta Events went above and beyond to ensure every child had a wonderful time. The decorations were absolutely stunning!</p><div class="tau"><div class="tav">SK</div><div><strong>Shameera Kabeer</strong><span>Birthday Client, Vengara</span><div class="tst">★★★★★</div></div></div></div>
+        <div class="tc"><div class="tq">"</div><p>The rustic wedding setup they created was beyond our imagination. They understood our vision perfectly and delivered a breathtaking experience our guests still talk about.</p><div class="tau"><div class="tav">NA</div><div><strong>Nidha &amp; Arshad</strong><span>Rustic Wedding, Tirur</span><div class="tst">★★★★★</div></div></div></div>
+        <div class="tc"><div class="tq">"</div><p>From the first consultation to the last dance, Delta Events was there every step of the way. Their catering team served the most delicious traditional Kerala food. Five stars without hesitation!</p><div class="tau"><div class="tav">HK</div><div><strong>Habeeba &amp; Khalid</strong><span>Wedding Client, Manjeri</span><div class="tst">★★★★★</div></div></div></div>
+        <div class="tc"><div class="tq">"</div><p>Our school annual day was a roaring success thanks to Delta Events. The stage design, sound, and coordination were world-class. Parents and students were absolutely thrilled with the result!</p><div class="tau"><div class="tav">JP</div><div><strong>Jamal Pasha</strong><span>School Principal, Malappuram</span><div class="tst">★★★★★</div></div></div></div>
+      </div>
+      <div class="tcon">
+        <button class="tbtn" id="tPrev">‹</button>
+        <div class="tdots" id="tDots"></div>
+        <button class="tbtn" id="tNext">›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="sec">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl">The People Behind the Magic</span>
+      <h2 class="st">Meet Our <em>Leadership</em></h2>
+      <div class="gb gbcx"></div>
+    </div>
+    <div class="tmgrid">
+      <div class="tmcard rv rvu" style="--d:0s">
+        <div class="tmph"><div class="tmbdg">♛</div><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Ahammed Anaf"></div>
+        <h3 class="tmnm">Mr. Ahammed Anaf</h3>
+        <span class="tmrl">Managing Director &amp; CEO</span>
+        <div class="tmlne"></div>
+        <p class="tmbio">The visionary behind Delta Events. With over a decade of experience, Ahammed has led the company to become one of Kerala's most trusted event brands — building every event with heart and precision.</p>
+        <div class="tmln"><a href="tel:+919633775535" title="Call">📞</a><a href="https://wa.me/919633775535" target="_blank" title="WhatsApp">💬</a><a href="https://instagram.com/DeltaEvents" target="_blank" title="Instagram">📸</a></div>
+      </div>
+      <div class="tmcard rv rvu" style="--d:.15s">
+        <div class="tmph"><div class="tmbdg">♛</div><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="COO"></div>
+        <h3 class="tmnm">Mr. Faris Jaleel</h3>
+        <span class="tmrl">Chief Operations Officer</span>
+        <div class="tmlne"></div>
+        <p class="tmbio">Faris oversees all event operations, vendor coordination, and on-ground execution. His meticulous planning ensures every event runs with clockwork precision from start to spectacular finish.</p>
+        <div class="tmln"><a href="tel:+919633775535" title="Call">📞</a><a href="https://wa.me/919633775535" target="_blank" title="WhatsApp">💬</a><a href="https://instagram.com/DeltaEvents" target="_blank" title="Instagram">📸</a></div>
+      </div>
+      <div class="tmcard rv rvu" style="--d:.3s">
+        <div class="tmph"><div class="tmbdg">♛</div><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" alt="Creative Director"></div>
+        <h3 class="tmnm">Ms. Rifa Nazar</h3>
+        <span class="tmrl">Creative Director</span>
+        <div class="tmlne"></div>
+        <p class="tmbio">Rifa leads the design and décor team at Delta Events. Her artistic eye and passion for aesthetics have crafted some of the most breathtaking event transformations across Kerala.</p>
+        <div class="tmln"><a href="tel:+919633775535" title="Call">📞</a><a href="https://wa.me/919633775535" target="_blank" title="WhatsApp">💬</a><a href="https://instagram.com/DeltaEvents" target="_blank" title="Instagram">📸</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="sec sdk">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl lt">Got Questions?</span>
+      <h2 class="st lt">Frequently <em>Asked</em></h2>
+      <div class="gb gbcx"></div>
+    </div>
+    <div class="fwrap">
+      <div class="fi rv rvu" style="--d:0s"><button class="fq">How far in advance should I book? <span class="fic">+</span></button><div class="fa"><p>We recommend booking at least 3–6 months in advance for weddings and large events. For smaller events like birthdays, 4–6 weeks is usually sufficient. We always try to accommodate last-minute requests too.</p></div></div>
+      <div class="fi rv rvu" style="--d:.1s"><button class="fq">Do you handle events outside Malappuram? <span class="fic">+</span></button><div class="fa"><p>Absolutely. We manage events across all of Kerala — Kozhikode, Kochi, Thiruvananthapuram and beyond. We bring the full Delta Events experience wherever you are.</p></div></div>
+      <div class="fi rv rvu" style="--d:.2s"><button class="fq">What is your pricing structure? <span class="fic">+</span></button><div class="fa"><p>Every event is unique, so we provide fully custom quotes based on your guest count, venue, services, and date. Contact us via WhatsApp or the form below for a free consultation.</p></div></div>
+      <div class="fi rv rvu" style="--d:.3s"><button class="fq">Do you provide catering? <span class="fic">+</span></button><div class="fa"><p>Yes! Full catering including traditional Kerala cuisine, multi-cuisine buffets, live counters, and custom menus. We comfortably handle 50 to 5000+ guests.</p></div></div>
+      <div class="fi rv rvu" style="--d:.4s"><button class="fq">Can I fully customize my event theme? <span class="fic">+</span></button><div class="fa"><p>Absolutely — customization is at the heart of everything we do. Share your vision, Pinterest boards, or color schemes and our creative team will bring it to life uniquely for you.</p></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact" class="sec sdk">
+  <div class="con">
+    <div class="sh rv rvu">
+      <span class="sl">Reach Out</span>
+      <h2 class="st"><span style="color: #25D366;">let's Plan</span> <em>Together</em></h2>
+      <div class="gb gbcx"></div>
+    </div>
+    <div class="cgrid">
+      <div class="rv rvl">
+        <div class="ci"><span class="cic">📞</span><div><h4>Phone / WhatsApp</h4><a href="tel:+919633775535">+91 96337 75535</a></div></div>
+        <div class="ci"><span class="cic">📍</span><div><h4>Location</h4><p>Vengara, Kerala 676304</p></div></div>
+        <div class="ci"><span class="cic">🕐</span><div><h4>Business Hours</h4><p>Open 24 Hours, 7 Days a Week</p></div></div>
+        <div class="ci"><span class="cic">🌐</span><div><h4>Website</h4><a href="http://www.deltaevents.in">www.deltaevents.in</a></div></div>
+        <div class="csoc">
+          <a href="https://instagram.com/DeltaEvents" target="_blank" class="csl">📸 Instagram</a>
+          <a href="https://www.facebook.com" target="_blank" class="csl">📘 Facebook</a>
+          <a href="https://www.youtube.com" target="_blank" class="csl">▶️ YouTube</a>
+          <a href="https://pinterest.com" target="_blank" class="csl">📌 Pinterest</a>
+        </div>
+      </div>
+      <div class="cfw rv rvr">
+        <form class="cform" onsubmit="doEnq(event)">
+          <div class="frow">
+            <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name" id="cN" required></div>
+            <div class="fg"><label>Phone / WhatsApp</label><input type="tel" placeholder="+91 XXXXX XXXXX" id="cP"></div>
+          </div>
+          <div class="fg">
+            <label>Service Interest</label>
+            <select id="cS">
+              <option value="">Select a Service</option>
+              <option>Weddings &amp; Engagements</option>
+              <option>Rustic Wedding</option>
+              <option>Baby Shower</option>
+              <option>Birthday Party</option>
+              <option>Corporate Event</option>
+              <option>Bridal Show</option>
+              <option>School Event</option>
+              <option>Catering &amp; Food</option>
+              <option>Photography &amp; Videography</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="frow">
+            <div class="fg"><label>Event Date</label><input type="date" id="cD"></div>
+            <div class="fg"><label>Guest Count</label><input type="number" placeholder="Approx. guests" id="cG"></div>
+          </div>
+          <div class="fg"><label>Message</label><textarea placeholder="Tell us about your dream event..." id="cM" rows="4"></textarea></div>
+          <button type="submit" class="bp bfu">Send Enquiry via WhatsApp ✦</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftop">
+    <div class="con">
+      <div class="fgrid">
+        <div class="fbrd">
+          <div class="flog"><span class="lcr">♛</span><div class="lt"><span class="ld">DELTA</span><span class="le">EVENTS</span></div></div>
+          <p>Creating unforgettable experiences across Kerala. Your dream event is our mission.</p>
+          <div class="fsoc">
+            <a href="https://instagram.com/DeltaEvents" target="_blank">📸</a>
+            <a href="https://facebook.com" target="_blank">📘</a>
+            <a href="https://youtube.com" target="_blank">▶️</a>
+            <a href="https://wa.me/919633775535" target="_blank">💬</a>
+            <a href="https://pinterest.com" target="_blank">📌</a>
+          </div>
+        </div>
+        <div class="fcol">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#team">Our Team</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Weddings</a></li>
+            <li><a href="#services">Corporate Events</a></li>
+            <li><a href="#services">Birthday Parties</a></li>
+            <li><a href="#services">Baby Showers</a></li>
+            <li><a href="#services">Bridal Shows</a></li>
+            <li><a href="#services">Photography</a></li>
+            <li><a href="#services">Catering</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Contact</h4>
+          <p>📍 Vengara, Kerala 676304</p>
+          <a href="tel:+919633775535">📞 +91 96337 75535</a>
+          <p>🕐 Open 24/7</p>
+          <a href="http://www.deltaevents.in">🌐 www.deltaevents.in</a>
+          <a href="mailto:info@deltaevents.in">📧 info@deltaevents.in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fbot"><div class="con"><p>© 2025 Delta Events, Vengara, Kerala. All Rights Reserved. &nbsp;|&nbsp; Managed by Mr. Ahammed Anaf</p></div></div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/919633775535?text=Hello%20Delta%20Events!%20I'd%20like%20to%20enquire%20about%20your%20services." target="_blank" class="waf">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span>Chat with Us</span>
+</a>
+
+<!-- SCROLL TOP -->
+<button class="stb" id="stb" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+(function(){
+'use strict';
+
+/* PRELOADER */
+window.addEventListener('load',function(){
+  setTimeout(function(){document.getElementById('pl').classList.add('done');},2500);
+});
+
+/* NAV SCROLL + SCROLL TOP */
+var nav=document.getElementById('nav'),stb=document.getElementById('stb');
+window.addEventListener('scroll',function(){
+  var sy=window.scrollY;
+  nav.classList.toggle('sc',sy>60);
+  stb.classList.toggle('sh',sy>400);
+  doReveal();
+  doCounters();
+},{passive:true});
+
+/* HAMBURGER */
+var ham=document.getElementById('ham'),mnav=document.getElementById('mnav');
+ham.addEventListener('click',function(){
+  ham.classList.toggle('op');
+  mnav.classList.toggle('op');
+});
+mnav.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click',function(){ham.classList.remove('op');mnav.classList.remove('op');});
+});
+
+/* HERO SLIDESHOW */
+var slides=Array.from(document.querySelectorAll('.hsl'));
+var dots=Array.from(document.querySelectorAll('.sd'));
+var cur=0,slTm;
+function goSl(n){
+  slides[cur].classList.remove('ac');
+  dots[cur].classList.remove('ac');
+  cur=(n+slides.length)%slides.length;
+  slides[cur].classList.add('ac');
+  dots[cur].classList.add('ac');
+}
+function startSl(){slTm=setInterval(function(){goSl(cur+1);},5500);}
+startSl();
+dots.forEach(function(d){
+  d.addEventListener('click',function(){
+    clearInterval(slTm);
+    goSl(parseInt(d.dataset.i));
+    startSl();
+  });
+});
+
+/* SCROLL REVEAL */
+var rvEls=Array.from(document.querySelectorAll('.rv'));
+function doReveal(){
+  var wh=window.innerHeight;
+  rvEls.forEach(function(el){
+    if(el.classList.contains('in'))return;
+    if(el.getBoundingClientRect().top<wh*0.9)el.classList.add('in');
+  });
+}
+doReveal();
+
+/* COUNTERS */
+var cDone=false;
+var cEls=Array.from(document.querySelectorAll('.stn'));
+function doCounters(){
+  if(cDone)return;
+  var sec=document.getElementById('achievements');
+  if(!sec)return;
+  if(sec.getBoundingClientRect().top<window.innerHeight*0.85){
+    cDone=true;
+    cEls.forEach(function(el){
+      var tgt=parseInt(el.dataset.target,10);
+      var isDec=!!el.dataset.dec;
+      var t0=Date.now(),dur=2000;
+      (function tick(){
+        var p=Math.min((Date.now()-t0)/dur,1);
+        var e=1-Math.pow(1-p,3);
+        var v=Math.floor(e*tgt);
+        el.textContent=isDec?(v/10).toFixed(1):v;
+        if(p<1)requestAnimationFrame(tick);
+        else el.textContent=isDec?(tgt/10).toFixed(1):tgt;
+      })();
+    });
+  }
+}
+
+/* GALLERY FILTER */
+var fbs=Array.from(document.querySelectorAll('.fb'));
+var gis=Array.from(document.querySelectorAll('.gi'));
+fbs.forEach(function(b){
+  b.addEventListener('click',function(){
+    fbs.forEach(function(x){x.classList.remove('ac');});
+    b.classList.add('ac');
+    var f=b.dataset.f;
+    gis.forEach(function(i){
+      i.classList.toggle('hid',f!=='all'&&i.dataset.cat!==f);
+    });
+  });
+});
+
+/* TESTIMONIALS */
+var tCards=Array.from(document.querySelectorAll('.tc'));
+var tDots=document.getElementById('tDots');
+var tIdx=0,tTm;
+function tPV(){return window.innerWidth>900?3:window.innerWidth>600?2:1;}
+function buildTD(){
+  tDots.innerHTML='';
+  var total=Math.ceil(tCards.length/tPV());
+  for(var i=0;i<total;i++){
+    var d=document.createElement('span');
+    if(i===0)d.classList.add('ac');
+    (function(ii){d.addEventListener('click',function(){showT(ii);});})(i);
+    tDots.appendChild(d);
+  }
+}
+function showT(idx){
+  var pv=tPV();
+  var max=Math.ceil(tCards.length/pv)-1;
+  tIdx=Math.max(0,Math.min(idx,max));
+  var s=tIdx*pv;
+  tCards.forEach(function(c,i){c.classList.toggle('vis',i>=s&&i<s+pv);});
+  Array.from(tDots.querySelectorAll('span')).forEach(function(d,i){d.classList.toggle('ac',i===tIdx);});
+}
+function startTTm(){tTm=setInterval(function(){var m=Math.ceil(tCards.length/tPV())-1;showT(tIdx>=m?0:tIdx+1);},4500);}
+buildTD();showT(0);startTTm();
+document.getElementById('tPrev').addEventListener('click',function(){clearInterval(tTm);showT(tIdx-1);startTTm();});
+document.getElementById('tNext').addEventListener('click',function(){clearInterval(tTm);showT(tIdx+1);startTTm();});
+var tCar=document.getElementById('tCar');
+tCar.addEventListener('mouseenter',function(){clearInterval(tTm);});
+tCar.addEventListener('mouseleave',function(){startTTm();});
+window.addEventListener('resize',function(){buildTD();showT(0);},{passive:true});
+
+/* FAQ */
+Array.from(document.querySelectorAll('.fi')).forEach(function(item){
+  var btn=item.querySelector('.fq'),ans=item.querySelector('.fa');
+  btn.addEventListener('click',function(){
+    var wasOpen=item.classList.contains('op');
+    document.querySelectorAll('.fi').forEach(function(x){
+      x.classList.remove('op');
+      x.querySelector('.fa').style.maxHeight='0';
+    });
+    if(!wasOpen){item.classList.add('op');ans.style.maxHeight=ans.scrollHeight+'px';}
+  });
+});
+
+/* CONTACT FORM → WHATSAPP */
+window.doEnq=function(e){
+  e.preventDefault();
+  var n=document.getElementById('cN').value;
+  var p=document.getElementById('cP').value;
+  var s=document.getElementById('cS').value;
+  var d=document.getElementById('cD').value;
+  var g=document.getElementById('cG').value;
+  var m=document.getElementById('cM').value;
+  var msg='Hello Delta Events! 🎉\n\nName: '+n+'\nPhone: '+(p||'Not provided')+'\nService: '+(s||'Not specified')+'\nEvent Date: '+(d||'Flexible')+'\nGuests: '+(g||'TBD')+'\nMessage: '+(m||'–')+'\n\nPlease contact me. Thank you!';
+  window.open('https://wa.me/919633775535?text='+encodeURIComponent(msg),'_blank');
+};
+
+
+
+})();
+</script>
+</body>
+</html>
