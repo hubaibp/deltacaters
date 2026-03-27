@@ -10,8 +10,8 @@
 <style>
 :root{--gold:#C9A84C;--gold-light:#E4C97A;--gold-dark:#A07832;--cream:#F5EDD9;--cream-dark:#EDE0C4;--dark:#111111;--dark2:#1C1C1C;--dark3:#272727;--tf:#F0E8D5;--fd:'Cormorant Garamond',Georgia,serif;--fb:'Jost',sans-serif;--fs:'Great Vibes',cursive;--ease:cubic-bezier(.25,.8,.25,1);--sh:0 20px 60px rgba(0,0,0,.18);--shg:0 8px 32px rgba(201,168,76,.35)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--cream);color:var(--dark);overflow-x:hidden;line-height:1.7}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--fb);background:var(--cream);color:var(--dark);overflow-x:hidden;line-height:1.7;max-width:100vw}
 img{max-width:100%;display:block;object-fit:cover}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
@@ -135,17 +135,63 @@ ul{list-style:none}
 .aft{font-size:.85rem;color:#454545}
 .afd{color:var(--gold);margin-right:.4rem}
 
-/* SERVICES */
-.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(201,168,76,.1)}
-.scard{background:var(--dark3);padding:2.5rem 2rem;transition:all .4s var(--ease);position:relative;overflow:hidden}
-.scard::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .5s}
-.scard:hover::after{width:100%}
-.scard:hover{background:#202020;transform:translateY(-5px)}
-.sico{font-size:2.2rem;margin-bottom:1.2rem;display:block;transition:transform .3s}
-.scard:hover .sico{transform:scale(1.18)}
-.scard h3{font-family:var(--fd);font-size:1.3rem;font-weight:500;color:var(--cream);margin-bottom:.75rem}
-.scard p{font-size:.84rem;color:rgba(240,232,213,.52);line-height:1.75;margin-bottom:1.5rem}
-.slnk{display:inline-block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,168,76,.4);padding-bottom:2px;transition:all .3s}
+/* ===== SERVICES - ENHANCED WITH IMAGE CARDS ===== */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.scard{
+  background:var(--dark3);
+  border-radius:4px;
+  overflow:hidden;
+  transition:all .4s var(--ease);
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+}
+.scard:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.scard-img{
+  position:relative;
+  height:200px;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.scard-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .65s var(--ease);
+  display:block;
+}
+.scard:hover .scard-img img{transform:scale(1.08)}
+.scard-img-ov{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 100%);
+  transition:opacity .4s;
+}
+.scard:hover .scard-img-ov{opacity:.7}
+.sico-badge{
+  position:absolute;
+  bottom:-18px;
+  left:1.5rem;
+  width:44px;
+  height:44px;
+  background:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.3rem;
+  box-shadow:0 4px 16px rgba(201,168,76,.45);
+  z-index:2;
+  border-radius:2px;
+  transition:transform .3s;
+}
+.scard:hover .sico-badge{transform:scale(1.12)}
+.scard-body{padding:2rem 1.5rem 1.8rem;flex:1;display:flex;flex-direction:column}
+.scard h3{font-family:var(--fd);font-size:1.25rem;font-weight:500;color:var(--cream);margin-bottom:.65rem;padding-top:.4rem}
+.scard p{font-size:.84rem;color:rgba(240,232,213,.52);line-height:1.75;margin-bottom:1.4rem;flex:1}
+.scard-line{width:32px;height:1px;background:var(--gold);margin-bottom:1rem;opacity:.5;transition:width .4s}
+.scard:hover .scard-line{width:56px;opacity:1}
+.slnk{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,168,76,.4);padding-bottom:2px;transition:all .3s}
 .slnk:hover{color:var(--gold-light);letter-spacing:.28em}
 
 /* STATS */
@@ -222,7 +268,6 @@ ul{list-style:none}
 .fa{overflow:hidden;max-height:0;transition:max-height .45s ease}
 .fa p{padding:0 0 1.2rem;color:rgba(240,232,213,.6);font-size:.9rem;line-height:1.8}
 
-
 /* CONTACT */
 .cgrid{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:start}
 .ci{display:flex;gap:1.2rem;align-items:flex-start;margin-bottom:1.8rem}
@@ -238,7 +283,7 @@ ul{list-style:none}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 .fg{display:flex;flex-direction:column;gap:.4rem}
 .fg label{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,232,213,.35)}
-.fg input,.fg select,.fg textarea{padding:.88rem 1rem;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.16);color:var(--cream);font-family:var(--fb);font-size:.9rem;outline:none;transition:border-color .3s;-webkit-appearance:none}
+.fg input,.fg select,.fg textarea{padding:.88rem 1rem;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.16);color:var(--cream);font-family:var(--fb);font-size:.9rem;outline:none;transition:border-color .3s;-webkit-appearance:none;width:100%}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold)}
 .fg select option{background:var(--dark2)}
 .fg textarea{resize:vertical}
@@ -284,6 +329,7 @@ footer{background:var(--dark)}
 .tmgrid{grid-template-columns:repeat(2,1fr);max-width:680px}
 .cgrid{grid-template-columns:1fr}
 .ggrid{grid-template-columns:repeat(2,1fr)}
+.sgrid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:600px){
 .sec{padding:4rem 0}
@@ -294,13 +340,11 @@ footer{background:var(--dark)}
 .tmgrid{grid-template-columns:1fr;max-width:300px}
 .fgrid{grid-template-columns:1fr;gap:2rem}
 .frow{grid-template-columns:1fr}
-.nlin{flex-direction:column}
-.nlfm{width:100%;flex-direction:column}
-.nlfm input{min-width:unset;width:100%;border-right:1px solid rgba(201,168,76,.25);border-bottom:none}
 .ggrid{grid-template-columns:1fr 1fr;grid-auto-rows:160px}
 .aacc{display:none}
 .waf span{display:none}
 .waf{padding:.88rem;border-radius:50%}
+.scard-img{height:170px}
 }
 </style>
 </head>
@@ -421,15 +465,133 @@ footer{background:var(--dark)}
       <div class="gb gbcx"></div>
     </div>
     <div class="sgrid">
-      <div class="scard rv rvu" style="--d:0s"><span class="sico">💍</span><h3>Weddings &amp; Engagements</h3><p>Timeless ceremonies crafted with elegance. We handle every detail from décor to catering for your perfect day.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Wedding%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.08s"><span class="sico">🌿</span><h3>Rustic Weddings</h3><p>Bohemian, earthy, and utterly romantic. Handcrafted rustic settings that feel like a fairy tale come to life.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Rustic%20Wedding%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.16s"><span class="sico">👶</span><h3>Baby Showers</h3><p>Celebrate the arrival of your little one with sweet, tender decorations and joyful atmospheres.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Baby%20Shower%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.24s"><span class="sico">🎂</span><h3>Birthday Parties</h3><p>From kids' magical parties to milestone adult celebrations — customized themes, cakes, and entertainment.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Birthday%20Party%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.32s"><span class="sico">💼</span><h3>Corporate Events</h3><p>Professional conferences, product launches, and team building events executed with flawless precision.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Corporate%20Event%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.40s"><span class="sico">👑</span><h3>Bridal Shows</h3><p>Grand bridal exhibitions showcasing the finest in fashion, jewelry, and bridal décor across Kerala.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Bridal%20Show%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.48s"><span class="sico">🎓</span><h3>School Events</h3><p>Annual days, cultural fests, farewell parties — memorable school events with professional stage setups.</p><a href="https://wa.me/919633775535?text=Interested%20in%20School%20Event%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.56s"><span class="sico">🍽️</span><h3>Catering &amp; Food</h3><p>Exquisite multi-cuisine catering with traditional Kerala flavors and international gourmet options.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Catering%20services" target="_blank" class="slnk">Enquire Now →</a></div>
-      <div class="scard rv rvu" style="--d:.64s"><span class="sico">📷</span><h3>Photography &amp; Video</h3><p>Cinematic storytelling through premium photography and videography that preserves every golden moment.</p><a href="https://wa.me/919633775535?text=Interested%20in%20Photography%20services" target="_blank" class="slnk">Enquire Now →</a></div>
+
+      <div class="scard rv rvu" style="--d:0s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Weddings">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">💍</div>
+        </div>
+        <div class="scard-body">
+          <h3>Weddings &amp; Engagements</h3>
+          <div class="scard-line"></div>
+          <p>Timeless ceremonies crafted with elegance. We handle every detail from décor to catering for your perfect day.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Wedding%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.08s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&q=80" alt="Rustic Wedding">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">🌿</div>
+        </div>
+        <div class="scard-body">
+          <h3>Rustic Weddings</h3>
+          <div class="scard-line"></div>
+          <p>Bohemian, earthy, and utterly romantic. Handcrafted rustic settings that feel like a fairy tale come to life.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Rustic%20Wedding%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.16s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=600&q=80" alt="Baby Shower">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">👶</div>
+        </div>
+        <div class="scard-body">
+          <h3>Baby Showers</h3>
+          <div class="scard-line"></div>
+          <p>Celebrate the arrival of your little one with sweet, tender decorations and joyful atmospheres.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Baby%20Shower%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.24s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Birthday Party">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">🎂</div>
+        </div>
+        <div class="scard-body">
+          <h3>Birthday Parties</h3>
+          <div class="scard-line"></div>
+          <p>From kids' magical parties to milestone adult celebrations — customized themes, cakes, and entertainment.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Birthday%20Party%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.32s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80" alt="Corporate Events">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">💼</div>
+        </div>
+        <div class="scard-body">
+          <h3>Corporate Events</h3>
+          <div class="scard-line"></div>
+          <p>Professional conferences, product launches, and team building events executed with flawless precision.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Corporate%20Event%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.40s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&q=80" alt="Bridal Shows">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">👑</div>
+        </div>
+        <div class="scard-body">
+          <h3>Bridal Shows</h3>
+          <div class="scard-line"></div>
+          <p>Grand bridal exhibitions showcasing the finest in fashion, jewelry, and bridal décor across Kerala.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Bridal%20Show%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.48s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&q=80" alt="School Events">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">🎓</div>
+        </div>
+        <div class="scard-body">
+          <h3>School Events</h3>
+          <div class="scard-line"></div>
+          <p>Annual days, cultural fests, farewell parties — memorable school events with professional stage setups.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20School%20Event%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.56s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Catering">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">🍽️</div>
+        </div>
+        <div class="scard-body">
+          <h3>Catering &amp; Food</h3>
+          <div class="scard-line"></div>
+          <p>Exquisite multi-cuisine catering with traditional Kerala flavors and international gourmet options.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Catering%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
+      <div class="scard rv rvu" style="--d:.64s">
+        <div class="scard-img">
+          <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80" alt="Photography">
+          <div class="scard-img-ov"></div>
+          <div class="sico-badge">📷</div>
+        </div>
+        <div class="scard-body">
+          <h3>Photography &amp; Video</h3>
+          <div class="scard-line"></div>
+          <p>Cinematic storytelling through premium photography and videography that preserves every golden moment.</p>
+          <a href="https://wa.me/919633775535?text=Interested%20in%20Photography%20services" target="_blank" class="slnk">Enquire Now →</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -565,13 +727,12 @@ footer{background:var(--dark)}
   </div>
 </section>
 
-
 <!-- CONTACT -->
 <section id="contact" class="sec sdk">
   <div class="con">
     <div class="sh rv rvu">
       <span class="sl">Reach Out</span>
-      <h2 class="st"><span style="color: #25D366;">let's Plan</span> <em>Together</em></h2>
+      <h2 class="st"><span style="color:#25D366;">Let's Plan</span> <em>Together</em></h2>
       <div class="gb gbcx"></div>
     </div>
     <div class="cgrid">
@@ -682,7 +843,7 @@ footer{background:var(--dark)}
 </a>
 
 <!-- SCROLL TOP -->
-<button class="stb" id="stb" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<!-- <button class="stb" id="stb" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button> -->
 
 <script>
 (function(){
@@ -841,8 +1002,6 @@ window.doEnq=function(e){
   var msg='Hello Delta Events! 🎉\n\nName: '+n+'\nPhone: '+(p||'Not provided')+'\nService: '+(s||'Not specified')+'\nEvent Date: '+(d||'Flexible')+'\nGuests: '+(g||'TBD')+'\nMessage: '+(m||'–')+'\n\nPlease contact me. Thank you!';
   window.open('https://wa.me/919633775535?text='+encodeURIComponent(msg),'_blank');
 };
-
-
 
 })();
 </script>
